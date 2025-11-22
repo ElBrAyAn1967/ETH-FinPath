@@ -3,13 +3,40 @@
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/hooks/useAuth";
 import { LogIn, LogOut, Wallet } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-/**
- * Componente de botón de login/logout
- * Maneja el estado de autenticación con Privy
- */
 export function LoginButton() {
+  const router = useRouter();
   const { isLoading, isAuthenticated, login, logout, wallet } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated && wallet) {
+      checkAndRedirect();
+    }
+  }, [isAuthenticated, wallet]);
+
+  const checkAndRedirect = async () => {
+    if (!wallet) return;
+
+    try {
+      const response = await fetch("/api/auth/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ walletAddress: wallet }),
+      });
+
+      const data = await response.json();
+
+      if (!data.exists || !data.user?.onboardingCompleted) {
+        router.push("/onboarding");
+      } else {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("Auth check error:", error);
+    }
+  };
 
   if (isLoading) {
     return (

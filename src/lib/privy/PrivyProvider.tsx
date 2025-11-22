@@ -20,12 +20,10 @@ export function PrivyProvider({ children }: { children: ReactNode }) {
         // Apariencia personalizada con colores de FinQuest
         appearance: {
           theme: "light",
-          accentColor: "#6e5acf", // Primary color
-          logo: "/logo.svg", // TODO: Añadir logo de FinQuest
+          accentColor: "#6e5acf",
+          logo: "/logo.svg",
         },
-        // Métodos de login (empezar simple, expandir después)
         loginMethods: ["email", "wallet", "google"],
-        // Wallets embebidas para onboarding invisible
         embeddedWallets: {
           ethereum: {
             createOnLogin: "users-without-wallets",

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun run drizzle-kit:*)",
+      "Bash(bun:*)",
+      "Bash(timeout 30 bun run dev:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
