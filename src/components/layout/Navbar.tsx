@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { LoginButton } from "@/features/auth/components/LoginButton";
 import { cn } from "@/lib/utils";
 
 /**
@@ -81,12 +81,7 @@ export default function Navbar() {
 
           {/* CTA Desktop */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button variant="outline" size="default" asChild>
-              <Link href="/login">Iniciar Sesión</Link>
-            </Button>
-            <Button variant="gradient" size="default" asChild>
-              <Link href="/signup">Comenzar Gratis</Link>
-            </Button>
+            <LoginButton />
           </div>
 
           {/* Botón Menú Mobile */}
@@ -130,22 +125,9 @@ export default function Navbar() {
                 ))}
                 {/* CTAs Mobile */}
                 <li className="pt-4 border-t border-[var(--border)] space-y-3">
-                  <Button
-                    variant="outline"
-                    size="default"
-                    className="w-full"
-                    asChild
-                  >
-                    <Link href="/login">Iniciar Sesión</Link>
-                  </Button>
-                  <Button
-                    variant="gradient"
-                    size="default"
-                    className="w-full"
-                    asChild
-                  >
-                    <Link href="/signup">Comenzar Gratis</Link>
-                  </Button>
+                  <div className="w-full">
+                    <LoginButton />
+                  </div>
                 </li>
               </ul>
             </nav>

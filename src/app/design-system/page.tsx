@@ -12,10 +12,6 @@ import {
 import { Badge } from "@/components/ui/Badge";
 import { Container } from "@/components/ui/Container";
 
-/**
- * Página de demostración del Design System de FinQuest
- * Inspirado en Frutero con la paleta personalizada
- */
 export default function DesignSystemPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[var(--primary)]/5 via-transparent to-[var(--accent-pink)]/5 py-12">
@@ -86,8 +82,6 @@ export default function DesignSystemPage() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Complementario 1 */}
             <Card>
               <CardHeader>
                 <CardTitle>Accent (Rosa)</CardTitle>
@@ -135,7 +129,7 @@ export default function DesignSystemPage() {
           </div>
         </section>
 
-        {/* Botones */}
+      
         <section className="mb-16">
           <h2 className="mb-8 text-3xl font-bold">Botones</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -251,7 +245,6 @@ export default function DesignSystemPage() {
           </div>
         </section>
 
-        {/* Badges */}
         <section className="mb-16">
           <h2 className="mb-8 text-3xl font-bold">Badges</h2>
           <Card>
