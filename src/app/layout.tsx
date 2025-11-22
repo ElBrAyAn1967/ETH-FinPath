@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { PrivyProvider } from "@/lib/privy/PrivyProvider";
+import { ClientProviders } from "@/components/providers/ClientProviders";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,6 +12,9 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+// Deshabilitar generación estática para esta app (Web3 es dinámico)
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "FinQuest - Aprende Finanzas Jugando",
@@ -25,11 +28,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
-        <PrivyProvider>{children}</PrivyProvider>
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );

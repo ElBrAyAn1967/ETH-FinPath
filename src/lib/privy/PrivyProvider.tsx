@@ -27,8 +27,9 @@ export function PrivyProvider({ children }: { children: ReactNode }) {
         loginMethods: ["email", "wallet", "google"],
         // Wallets embebidas para onboarding invisible
         embeddedWallets: {
-          createOnLogin: "users-without-wallets",
-          requireUserPasswordOnCreate: false, // Onboarding sin fricción
+          ethereum: {
+            createOnLogin: "users-without-wallets",
+          },
         },
         // Configuración de legal
         legal: {

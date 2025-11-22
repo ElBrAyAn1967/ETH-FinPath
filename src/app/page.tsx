@@ -1,3 +1,5 @@
+"use client";
+
 import HeroSection from "@/components/landing/HeroSection";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
