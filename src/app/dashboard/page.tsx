@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import { AirdropBox } from "@/features/rewards/components/AirdropBox";
 import { Loader2, Trophy, Coins, Target } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -20,6 +23,7 @@ export default function DashboardPage() {
   const { wallet, isLoading: authLoading, isAuthenticated } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasClaimedWelcome, setHasClaimedWelcome] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated && !authLoading) {
@@ -43,6 +47,8 @@ export default function DashboardPage() {
           router.push("/onboarding");
         } else {
           setProfile(data.user);
+          const hasBalance = data.user.circlesBalance && BigInt(data.user.circlesBalance) > 0;
+          setHasClaimedWelcome(hasBalance);
         }
       } catch (error) {
         console.error("Error loading profile:", error);
@@ -72,57 +78,89 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--background)] py-8 px-4">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <h1 className="text-4xl font-bold text-[var(--foreground)] mb-2">
-            Bienvenido, {profile.displayName}! 👋
-          </h1>
-          <p className="text-[var(--muted-foreground)]">
-            @{profile.username}
-          </p>
-        </motion.div>
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-[var(--background)] pt-24 pb-8 px-4">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <h1 className="text-4xl font-bold text-[var(--foreground)] mb-2">
+              Bienvenido, {profile.displayName}! 👋
+            </h1>
+            <p className="text-[var(--muted-foreground)]">
+              @{profile.username}
+            </p>
+          </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <StatCard
-            icon={<Trophy className="w-8 h-8" />}
-            label="Nivel"
-            value={profile.level.toString()}
-            color="var(--primary)"
-          />
-          <StatCard
-            icon={<Target className="w-8 h-8" />}
-            label="Experiencia"
-            value={`${profile.xp} XP`}
-            color="var(--accent)"
-          />
-          <StatCard
-            icon={<Coins className="w-8 h-8" />}
-            label="Circles Balance"
-            value={profile.circlesBalance || "0"}
-            color="var(--success)"
-          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <StatCard
+              icon={<Trophy className="w-8 h-8" />}
+              label="Nivel"
+              value={profile.level.toString()}
+              color="var(--primary)"
+            />
+            <StatCard
+              icon={<Target className="w-8 h-8" />}
+              label="Experiencia"
+              value={`${profile.xp} XP`}
+              color="var(--accent)"
+            />
+            <StatCard
+              icon={<Coins className="w-8 h-8" />}
+              label="Circles Balance"
+              value={profile.circlesBalance || "0"}
+              color="var(--success)"
+            />
+          </div>
+
+          {!hasClaimedWelcome && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="mb-8"
+            >
+              <AirdropBox
+                onClaim={async () => {
+                  if (!wallet) return;
+                  const response = await fetch("/api/rewards/claim-welcome", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ walletAddress: wallet }),
+                  });
+
+                  if (response.ok) {
+                    const data = await response.json();
+                    setHasClaimedWelcome(true);
+                    setProfile((prev) =>
+                      prev ? { ...prev, circlesBalance: data.newBalance } : null
+                    );
+                  }
+                }}
+              />
+            </motion.div>
+          )}
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: hasClaimedWelcome ? 0.2 : 0.4 }}
+            className="bg-[var(--card)] rounded-3xl p-8 border border-[var(--border)]"
+          >
+            <h2 className="text-2xl font-bold text-[var(--foreground)] mb-4">
+              Tu Aventura Financiera Comienza Aquí
+            </h2>
+            <p className="text-[var(--muted-foreground)]">
+              El dashboard completo con misiones y recompensas estará disponible pronto.
+            </p>
+          </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="bg-[var(--card)] rounded-3xl p-8 border border-[var(--border)]"
-        >
-          <h2 className="text-2xl font-bold text-[var(--foreground)] mb-4">
-            Tu Aventura Financiera Comienza Aquí
-          </h2>
-          <p className="text-[var(--muted-foreground)]">
-            El dashboard completo con misiones y recompensas estará disponible pronto.
-          </p>
-        </motion.div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }
 

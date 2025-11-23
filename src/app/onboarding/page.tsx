@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { ProfileSetupForm, ProfileData } from "@/features/profile/components/ProfileSetupForm";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
@@ -70,17 +72,21 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[var(--background)] via-[var(--primary)]/5 to-[var(--background)] py-12 px-4">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <ProfileSetupForm
-          walletAddress={wallet}
-          onComplete={handleProfileComplete}
-        />
-      </motion.div>
-    </div>
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-gradient-to-br from-[var(--background)] via-[var(--primary)]/5 to-[var(--background)] pt-24 pb-12 px-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <ProfileSetupForm
+            walletAddress={wallet}
+            onComplete={handleProfileComplete}
+          />
+        </motion.div>
+      </div>
+      <Footer />
+    </>
   );
 }
