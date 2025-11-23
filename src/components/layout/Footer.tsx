@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Facebook, MessageCircle, Twitter, Github, Youtube } from "lucide-react";
 
@@ -54,12 +55,13 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center">
-                <span className="text-white font-bold text-lg">F</span>
-              </div>
-              <span className="text-lg font-bold text-[var(--foreground)]">
-                FinQuest
-              </span>
+              <Image
+                src="/FinPath.png"
+                alt="FinPath Logo"
+                width={120}
+                height={32}
+                className="h-8 w-auto"
+              />
             </Link>
 
             {/* Footer Links */}
@@ -91,7 +93,7 @@ export default function Footer() {
                 href="/"
                 className="hover:text-[var(--primary)] transition-colors"
               >
-                FinQuest
+                FinPath
               </Link>
               . Todos los derechos reservados.
             </div>

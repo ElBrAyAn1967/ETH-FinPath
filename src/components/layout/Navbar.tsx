@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { LoginButton } from "@/features/auth/components/LoginButton";
@@ -51,15 +52,14 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center space-x-2">
-              {/* Placeholder para tu logo - reemplaza con tu imagen */}
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">F</span>
-                </div>
-                <span className="text-xl font-bold text-[var(--foreground)]">
-                  FinQuest
-                </span>
-              </div>
+              <Image
+                src="/FinPath.png"
+                alt="FinPath Logo"
+                width={150}
+                height={40}
+                className="h-10 w-auto"
+                priority
+              />
             </Link>
           </div>
 

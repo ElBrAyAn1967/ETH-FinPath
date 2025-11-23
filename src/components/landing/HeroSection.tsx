@@ -1,90 +1,118 @@
 "use client";
 
-import { Sparkles, TrendingUp, Coins } from "lucide-react";
+import { TrendingUp, Coins, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 import { Container } from "@/components/ui/Container";
 
 /**
- * Hero Section de FinQuest
- * Inspirado en Frutero con badges rotados y CTAs prominentes
+ * Hero Section de FinPath
+ * Diseño limpio y profesional enfocado en conversión
  */
 export default function HeroSection() {
   return (
-    <section className="min-h-[70svh] w-full pt-12 pb-8 md:pt-20 lg:pt-16 bg-gradient-to-br from-[var(--primary)]/5 via-transparent to-[var(--accent-pink)]/5">
+    <section className="min-h-[80vh] w-full flex items-center py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
       <Container maxWidth="7xl">
-        <div className="mx-auto space-y-8 px-4 text-center">
-          {/* Badge Superior */}
-          <div className="flex justify-center">
-            <Badge variant="accent" rotate="left" size="lg">
-              <Sparkles className="mr-2 h-4 w-4" />
-              Aprende jugando
-            </Badge>
-          </div>
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Contenido de texto */}
+          <div className="space-y-8">
+            <div className="inline-block px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
+              🎓 Educación Financiera Gamificada
+            </div>
 
-          {/* Título Principal con badges inline rotados (estilo Frutero) */}
-          <div className="mx-auto max-w-4xl">
-            <h1 className="text-4xl leading-tight font-semibold text-[var(--foreground)] md:text-5xl lg:text-6xl">
-              Domina tus{" "}
-              <span className="inline-block -rotate-2 transform rounded-lg bg-[var(--accent-yellow)] px-4 py-2 text-[var(--foreground)]">
-                Finanzas
-              </span>{" "}
-              <br className="md:hidden" />
-              mientras{" "}
-              <br />
-              ganas{" "}
-              <span className="inline-block rotate-2 transform rounded-lg bg-[var(--secondary)] px-4 py-2 text-white">
-                USDC real
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight">
+              Domina tus finanzas mientras ganas{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                tokens reales
               </span>
             </h1>
-          </div>
 
-          {/* Subtítulo */}
-          <p className="mx-auto max-w-2xl text-xl text-[var(--foreground)]/70 md:text-2xl lg:text-xl">
-            La primera app que te enseña finanzas personales y Web3{" "}
-            <Badge variant="primary" rotate="right" className="mx-1">
-              sin que te des cuenta
-            </Badge>
-            . Completa misiones, gana recompensas y conviértete en un experto
-            financiero.
-          </p>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-xl">
+              Aprende finanzas personales y Web3 completando misiones interactivas.
+              Sin complicaciones, sin seed phrases, solo aprendizaje y recompensas.
+            </p>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button variant="gradient" size="xl" className="group">
-              Preparate e inicia 
-              <TrendingUp className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button variant="outline" size="xl">
-              <Coins className="mr-2 h-5 w-5" />
-              Ver Demo
-            </Button>
-          </div>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button
+                variant="gradient"
+                size="xl"
+                className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              >
+                Comenzar Ahora
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Button
+                variant="outline"
+                size="xl"
+                className="border-2 border-gray-300 dark:border-gray-700 hover:border-blue-500"
+              >
+                <Coins className="mr-2 h-5 w-5" />
+                Ver Demo
+              </Button>
+            </div>
 
-          {/* Stats rápidos */}
-          <div className="mx-auto max-w-3xl grid grid-cols-3 gap-6 pt-8">
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-[var(--primary)]">
-                $500K+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-200 dark:border-gray-800">
+              <div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                  7
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Mundos Financieros
+                </div>
               </div>
-              <div className="text-sm text-[var(--foreground)]/60">
-                En recompensas
+              <div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                  100+
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Misiones
+                </div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                  Web3
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Integrado
+                </div>
               </div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-[var(--secondary)]">
-                10K+
-              </div>
-              <div className="text-sm text-[var(--foreground)]/60">
-                Usuarios activos
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-[var(--accent-pink)]">
-                7 Mundos
-              </div>
-              <div className="text-sm text-[var(--foreground)]/60">
-                Para explorar
+          </div>
+
+          {/* Imagen/Ilustración */}
+          <div className="relative hidden lg:block">
+            <div className="aspect-square rounded-3xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 dark:from-blue-500/10 dark:to-purple-500/10 backdrop-blur-sm border border-gray-200 dark:border-gray-800 p-8 flex items-center justify-center">
+              <div className="text-center space-y-6">
+                <div className="text-8xl">🎮</div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 bg-white dark:bg-gray-900 p-4 rounded-xl shadow-lg">
+                    <div className="w-12 h-12 rounded-lg bg-green-500 flex items-center justify-center text-2xl">
+                      💰
+                    </div>
+                    <div className="text-left">
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Nivel 1</div>
+                      <div className="font-bold text-gray-900 dark:text-white">Mundo de Ahorro</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 bg-white dark:bg-gray-900 p-4 rounded-xl shadow-lg">
+                    <div className="w-12 h-12 rounded-lg bg-blue-500 flex items-center justify-center text-2xl">
+                      📊
+                    </div>
+                    <div className="text-left">
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Nivel 2</div>
+                      <div className="font-bold text-gray-900 dark:text-white">Mundo de Inversión</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 bg-white dark:bg-gray-900 p-4 rounded-xl shadow-lg">
+                    <div className="w-12 h-12 rounded-lg bg-purple-500 flex items-center justify-center text-2xl">
+                      🪙
+                    </div>
+                    <div className="text-left">
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Nivel 3</div>
+                      <div className="font-bold text-gray-900 dark:text-white">Mundo Cripto</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
