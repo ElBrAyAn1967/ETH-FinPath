@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { AvatarSelector } from "./AvatarSelector";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { useCircles } from "@/hooks/useCircles";
 
 interface ProfileSetupFormProps {
   walletAddress: string;
@@ -31,6 +32,7 @@ export function ProfileSetupForm({
     "idle" | "checking" | "available" | "taken"
   >("idle");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { register: registerCircles } = useCircles();
 
   useEffect(() => {
     if (username.length < 3) {
@@ -72,6 +74,9 @@ export function ProfileSetupForm({
     setIsSubmitting(true);
 
     try {
+      // Skip Circles registration during onboarding
+      // User will be registered automatically when they mint for the first time
+
       const response = await fetch("/api/auth/create-profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -90,9 +95,9 @@ export function ProfileSetupForm({
         const error = await response.json();
         alert(error.error || "Error al crear perfil");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Profile creation failed:", error);
-      alert("Error al crear perfil. Intenta nuevamente.");
+      alert(error.message || "Error al crear perfil. Intenta nuevamente.");
     } finally {
       setIsSubmitting(false);
     }

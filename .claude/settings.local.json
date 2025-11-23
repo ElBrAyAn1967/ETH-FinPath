@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(timeout 30 bun run:*)"
-    ],
-    "deny": [],
-    "ask": []
-  }
-}

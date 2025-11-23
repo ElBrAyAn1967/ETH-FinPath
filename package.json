@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@circles-sdk/data": "^0.29.2",
     "@circles-sdk/sdk": "^0.29.2",
     "@neondatabase/serverless": "^1.0.2",
     "@privy-io/react-auth": "^3.7.0",

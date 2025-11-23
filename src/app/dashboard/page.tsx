@@ -8,6 +8,7 @@ import Footer from "@/components/layout/Footer";
 import { AirdropBox } from "@/features/rewards/components/AirdropBox";
 import { Loader2, Trophy, Coins, Target } from "lucide-react";
 import { motion } from "framer-motion";
+import { useCircles } from "@/hooks/useCircles";
 
 interface UserProfile {
   username: string;
@@ -24,6 +25,8 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasClaimedWelcome, setHasClaimedWelcome] = useState(false);
+  const [realBalance, setRealBalance] = useState<string | null>(null);
+  const { getBalance } = useCircles();
 
   useEffect(() => {
     if (!isAuthenticated && !authLoading) {
@@ -49,6 +52,9 @@ export default function DashboardPage() {
           setProfile(data.user);
           const hasBalance = data.user.circlesBalance && BigInt(data.user.circlesBalance) > 0;
           setHasClaimedWelcome(hasBalance);
+
+          const balance = await getBalance(wallet);
+          setRealBalance(balance);
         }
       } catch (error) {
         console.error("Error loading profile:", error);
@@ -60,7 +66,7 @@ export default function DashboardPage() {
     if (wallet) {
       loadProfile();
     }
-  }, [wallet, isAuthenticated, authLoading, router]);
+  }, [wallet, isAuthenticated, authLoading, router, getBalance]);
 
   if (authLoading || isLoading) {
     return (
@@ -110,8 +116,8 @@ export default function DashboardPage() {
             />
             <StatCard
               icon={<Coins className="w-8 h-8" />}
-              label="Circles Balance"
-              value={profile.circlesBalance || "0"}
+              label="Circles Balance (Blockchain)"
+              value={realBalance !== null ? `${(Number(realBalance) / 1e18).toFixed(2)} CRC` : "Cargando..."}
               color="var(--success)"
             />
           </div>
@@ -133,11 +139,10 @@ export default function DashboardPage() {
                   });
 
                   if (response.ok) {
-                    const data = await response.json();
                     setHasClaimedWelcome(true);
-                    setProfile((prev) =>
-                      prev ? { ...prev, circlesBalance: data.newBalance } : null
-                    );
+
+                    const balance = await getBalance(wallet);
+                    setRealBalance(balance);
                   }
                 }}
               />

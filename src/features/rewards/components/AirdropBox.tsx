@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Gift, Coins, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { useCircles } from "@/hooks/useCircles";
 
 interface AirdropBoxProps {
   onClaim: () => Promise<void>;
@@ -13,6 +14,9 @@ export function AirdropBox({ onClaim }: AirdropBoxProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isClaiming, setIsClaiming] = useState(false);
   const [claimed, setClaimed] = useState(false);
+  const [isMinting, setIsMinting] = useState(false);
+  const [mintedAmount, setMintedAmount] = useState<string | null>(null);
+  const { mint, register } = useCircles();
 
   const handleClaim = async () => {
     if (claimed) return;
@@ -20,12 +24,44 @@ export function AirdropBox({ onClaim }: AirdropBoxProps) {
     setIsClaiming(true);
     try {
       await onClaim();
+
+      // Try to mint - if registration is needed, mint() will handle it
+      const mintResult = await mint();
+      if (mintResult.success) {
+        setMintedAmount(mintResult.amount);
+      }
+
       setIsOpen(true);
       setClaimed(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Claim error:", error);
+
+      // Provide more helpful error message
+      const errorMessage = error.message || "Error al mintear Circles";
+      if (errorMessage.includes("not signed up") || errorMessage.includes("not registered")) {
+        alert("Primero necesitas registrarte en Circles Protocol. Por favor, intenta nuevamente.");
+      } else if (errorMessage.includes("RPC")) {
+        alert("Error de conexión con Circles. Por favor, intenta nuevamente en unos momentos.");
+      } else {
+        alert(errorMessage);
+      }
     } finally {
       setIsClaiming(false);
+    }
+  };
+
+  const handleMint = async () => {
+    setIsMinting(true);
+    try {
+      const result = await mint();
+      if (result.success) {
+        setMintedAmount(result.amount);
+      }
+    } catch (error) {
+      console.error("Mint error:", error);
+      alert("Error al mintear Circles. Asegúrate de estar registrado en Circles Protocol.");
+    } finally {
+      setIsMinting(false);
     }
   };
 
@@ -85,10 +121,10 @@ export function AirdropBox({ onClaim }: AirdropBoxProps) {
                 <div className="mb-6">
                   <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-4">
                     <Coins className="w-6 h-6 text-yellow-300" />
-                    <span className="text-3xl font-bold text-white">5 USDC</span>
+                    <span className="text-3xl font-bold text-white">Bono de Bienvenida</span>
                   </div>
                   <p className="text-white/90 text-lg">
-                    en Circles Protocol
+                    Mintea tus primeros Circles tokens
                   </p>
                 </div>
 
@@ -101,12 +137,12 @@ export function AirdropBox({ onClaim }: AirdropBoxProps) {
                   {isClaiming ? (
                     <>
                       <div className="w-5 h-5 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin mr-2" />
-                      Reclamando...
+                      Minteando Circles...
                     </>
                   ) : (
                     <>
-                      <Gift className="mr-2 h-5 w-5" />
-                      Reclamar Bono
+                      <Coins className="mr-2 h-5 w-5" />
+                      Reclamar y Mintear
                     </>
                   )}
                 </Button>
@@ -144,15 +180,39 @@ export function AirdropBox({ onClaim }: AirdropBoxProps) {
                 </motion.div>
 
                 <h3 className="text-3xl font-bold text-white mb-2">
-                  ¡Felicidades! 🎉
+                  ¡Bienvenido a Circles! 🎉
                 </h3>
                 <p className="text-white/90 text-lg mb-4">
-                  Has reclamado tu bono de bienvenida
+                  Has reclamado tu bono y minteado tus primeros Circles
                 </p>
-                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <Coins className="w-6 h-6 text-yellow-300" />
-                  <span className="text-2xl font-bold text-white">+5 USDC</span>
-                </div>
+
+                {mintedAmount && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3 }}
+                    className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-6"
+                  >
+                    <Coins className="w-6 h-6 text-yellow-300" />
+                    <span className="text-2xl font-bold text-white">
+                      +{(Number(mintedAmount) / 1e18).toFixed(2)} CRC
+                    </span>
+                  </motion.div>
+                )}
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="mt-6"
+                >
+                  <p className="text-green-300 font-bold text-lg">
+                    ✨ Tokens minteados exitosamente en la blockchain!
+                  </p>
+                  <p className="text-white/70 text-sm mt-2">
+                    Puedes mintear más Circles cada hora (24 CRC por día)
+                  </p>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>

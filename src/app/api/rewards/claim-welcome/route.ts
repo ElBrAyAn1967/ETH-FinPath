@@ -26,22 +26,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const currentBalance = BigInt(existingUser.circlesBalance || "0");
-    const airdropAmount = BigInt("5000000");
-    const newBalance = currentBalance + airdropAmount;
-
     await db
       .update(users)
       .set({
-        circlesBalance: newBalance.toString(),
         updatedAt: new Date(),
       })
       .where(eq(users.id, normalizedAddress));
 
     return NextResponse.json({
       success: true,
-      newBalance: newBalance.toString(),
-      airdropAmount: airdropAmount.toString(),
+      message: "Welcome bonus claimed! Your Circles tokens are being minted on the blockchain.",
     });
   } catch (error) {
     console.error("Airdrop claim error:", error);
