@@ -155,12 +155,86 @@ export default function DashboardPage() {
             transition={{ delay: hasClaimedWelcome ? 0.2 : 0.4 }}
             className="bg-[var(--card)] rounded-3xl p-8 border border-[var(--border)]"
           >
-            <h2 className="text-2xl font-bold text-[var(--foreground)] mb-4">
-              Tu Aventura Financiera Comienza Aquí
-            </h2>
-            <p className="text-[var(--muted-foreground)]">
-              El dashboard completo con misiones y recompensas estará disponible pronto.
-            </p>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-[var(--foreground)]">
+                Tu Aventura Financiera Comienza Aquí
+              </h2>
+
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => router.push("/finpath")}
+                className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-all border-2 border-green-400"
+              >
+                <span className="text-xl">🗺️</span>
+                <span>Entrar a FinPath</span>
+                <motion.span
+                  animate={{ x: [0, 4, 0] }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                >
+                  ▶
+                </motion.span>
+              </motion.button>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <WorldCard
+                icon="💰"
+                title="Mundo de Ahorro"
+                isActive={true}
+                level={1}
+                description="Aprende a ahorrar"
+              />
+              <WorldCard
+                icon="📊"
+                title="Mundo de Inversión"
+                isActive={true}
+                level={2}
+                description="Descubre las inversiones"
+              />
+              <WorldCard
+                icon="🪙"
+                title="Mundo Cripto"
+                isActive={true}
+                level={3}
+                description="Explora blockchain"
+              />
+              <WorldCard
+                icon="🏦"
+                title="Mundo Bancario"
+                isActive={false}
+                level={4}
+                description="Domina las finanzas"
+              />
+              <WorldCard
+                icon="💳"
+                title="Mundo de Crédito"
+                isActive={false}
+                level={5}
+                description="Maneja el crédito"
+              />
+              <WorldCard
+                icon="🏠"
+                title="Mundo Inmobiliario"
+                isActive={false}
+                level={6}
+                description="Invierte en propiedades"
+              />
+              <WorldCard
+                icon="📈"
+                title="Mundo Empresarial"
+                isActive={false}
+                level={7}
+                description="Crea tu negocio"
+              />
+              <WorldCard
+                icon="🌍"
+                title="Mundo Global"
+                isActive={false}
+                level={8}
+                description="Economía mundial"
+              />
+            </div>
           </motion.div>
         </div>
       </div>
@@ -195,6 +269,86 @@ function StatCard({ icon, label, value, color }: StatCardProps) {
           <p className="text-sm text-[var(--muted-foreground)]">{label}</p>
           <p className="text-2xl font-bold text-[var(--foreground)]">{value}</p>
         </div>
+      </div>
+    </motion.div>
+  );
+}
+
+interface WorldCardProps {
+  icon: string;
+  title: string;
+  description: string;
+  level: number;
+  isActive: boolean;
+}
+
+function WorldCard({ icon, title, description, level, isActive }: WorldCardProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={isActive ? { scale: 1.05, y: -5 } : {}}
+      transition={{ duration: 0.2 }}
+      className={`
+        relative rounded-2xl p-6 border-2 transition-all duration-300
+        ${isActive
+          ? 'bg-gradient-to-br from-[var(--primary)]/10 to-[var(--accent)]/10 border-[var(--primary)] cursor-pointer hover:shadow-xl hover:shadow-[var(--primary)]/20'
+          : 'bg-[var(--card-dark)] border-gray-700 opacity-50 cursor-not-allowed grayscale'
+        }
+      `}
+    >
+      {!isActive && (
+        <div className="absolute top-3 right-3">
+          <div className="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center">
+            <span className="text-xs text-white">🔒</span>
+          </div>
+        </div>
+      )}
+
+      <div className="text-center">
+        <div className={`text-5xl mb-3 ${!isActive && 'grayscale opacity-40'}`}>
+          {icon}
+        </div>
+
+        <div className={`
+          inline-block px-3 py-1 rounded-full text-xs font-bold mb-2
+          ${isActive
+            ? 'bg-[var(--primary)] text-white'
+            : 'bg-gray-700 text-gray-400'
+          }
+        `}>
+          Nivel {level}
+        </div>
+
+        <h3 className={`
+          text-lg font-bold mb-2
+          ${isActive ? 'text-[var(--foreground)]' : 'text-gray-500'}
+        `}>
+          {title}
+        </h3>
+
+        <p className={`
+          text-sm
+          ${isActive ? 'text-[var(--muted-foreground)]' : 'text-gray-600'}
+        `}>
+          {description}
+        </p>
+
+        {isActive && (
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-4 w-full py-2 bg-[var(--primary)] text-white rounded-lg font-medium hover:bg-[var(--primary)]/90 transition-colors"
+          >
+            Explorar
+          </motion.button>
+        )}
+
+        {!isActive && (
+          <div className="mt-4 w-full py-2 bg-gray-700 text-gray-500 rounded-lg font-medium text-center">
+            Bloqueado
+          </div>
+        )}
       </div>
     </motion.div>
   );
